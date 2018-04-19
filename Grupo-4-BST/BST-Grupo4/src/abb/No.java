@@ -10,6 +10,10 @@ public class No
 	private No noFilhoEsquerda;
 	private No noFilhoDireita;
 	
+	public No(){
+		
+	}
+	
 	public No (int valor)
 	{
 		this.valor = valor;

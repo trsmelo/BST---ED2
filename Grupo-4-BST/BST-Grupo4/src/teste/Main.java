@@ -37,6 +37,13 @@ public class Main {
 			System.out.print("Arvore Nova: ");
 			abbTree.display(abbTree.getRaiz());
 			
+			System.out.println("");
+			
+			abbTree.removeNoRecursivo(30);
+			System.out.print("Arvore Nova: ");
+			abbTree.display(abbTree.getRaiz());
+			
+			
 		}
 		
 		if (input == 2){

@@ -3,7 +3,8 @@ package abb;
 public class BinarySearchRecursive {
 
 	private static No raiz;
-
+	private static No pai;
+	
 	public static No getRaiz() {
 		return raiz;
 	}
@@ -100,45 +101,62 @@ public class BinarySearchRecursive {
 	
 	
 	public No removeNoRecursivo(int valor){
-		return removeNoRecursivo(raiz, valor);
+		return removeNoRecursivo(raiz, valor, pai);
 	}
 	/**
 	 * Remoção recursiva de no em arvore binaria
 	 * 
 	 */
-	private No removeNoRecursivo(No no, int valor) {
-
+	private No removeNoRecursivo(No no, int valor, No pai) {
+		
 		if (no == null) {
 
 			return null;
 		} else if (no.getNoFilhoEsquerda() == null && no.getNoFilhoDireita() == null) {
-
-			no = null;
-			return no;
-
+			if(no.getValor() == valor){
+				if(pai.getNoFilhoEsquerda() != null){
+					if(pai.getNoFilhoEsquerda().getValor() == valor){
+						pai.setNoFilhoEsquerda(null);
+					}
+				}
+				if(pai.getNoFilhoDireita() != null){
+					if(pai.getNoFilhoDireita().getValor() == valor)
+					{
+						pai.setNoFilhoDireita(null);
+					}
+				}
+				return pai;
+			}
 		} else if (no.getNoFilhoEsquerda() == null && no.getNoFilhoDireita() != null) {
-
-			if (no.getNoFilhoDireita().getValor() == valor) {
+			if (no.getValor() == valor) {
 				no = no.getNoFilhoDireita();
+				pai.setNoFilhoDireita(null);
+				return no;
+				
 			} else {
-				removeNoRecursivo(no.getNoFilhoDireita(), valor);
+				removeNoRecursivo(no.getNoFilhoDireita(), valor, no);
 			}
 		} else if (no.getNoFilhoEsquerda() != null && no.getNoFilhoDireita() == null) {
-			if (no.getNoFilhoEsquerda().getValor() == valor) {
+			if (no.getValor() == valor) {
 				no = no.getNoFilhoEsquerda();
+				pai.setNoFilhoEsquerda(null);
+				return no;
 			} else {
-				removeNoRecursivo(no.getNoFilhoEsquerda(), valor);
+				removeNoRecursivo(no.getNoFilhoEsquerda(), valor, no);
 			}
-		} else {
 			
-			if(valor > no.getValor()){
+		} else if(no.getNoFilhoEsquerda() != null && no.getNoFilhoDireita() != null){
+			
+			if(no.getValor() < valor){
+				removeNoRecursivo(no.getNoFilhoDireita(), valor, no);
+			} else if(no.getValor() > valor){
+				removeNoRecursivo(no.getNoFilhoEsquerda(), valor, no);
+			
+			}else{
 				int menorNoDireita = minValor(no.getNoFilhoDireita());
-				removeNoRecursivo(no.getNoFilhoDireita(), menorNoDireita);
+				removeNoRecursivo(no.getNoFilhoDireita(), menorNoDireita, no);
 				no.setValor(menorNoDireita);
-			} else {
-				int menorNoDireita = minValor(no.getNoFilhoEsquerda());
-				removeNoRecursivo(no.getNoFilhoDireita(), menorNoDireita);
-				no.setValor(menorNoDireita);
+				no.setNoFilhoDireita(null);
 			}
 		}
 		
